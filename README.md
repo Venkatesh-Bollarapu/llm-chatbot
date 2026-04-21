@@ -40,7 +40,7 @@ This project demonstrates a **stateful chatbot**, where conversation history is 
 
 ### 1. Clone the repository
 
-git clone https://github.com/your-username/llm-chatbot.git
+git clone https://github.com/Venkatesh-Bollarapu/llm-chatbot.git
 
 cd llm-chatbot
 
