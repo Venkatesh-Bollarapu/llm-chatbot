@@ -19,3 +19,13 @@ if user_input:
 
     with st.chat_message("user"):
         st.write(user_input)
+
+    response = "Hello! I am your chatbot."
+
+    st.session_state["messages"].append({
+        "role": "assistant",
+        "content": response
+    })
+
+    with st.chat_message("assistant"):
+        st.write(response)
