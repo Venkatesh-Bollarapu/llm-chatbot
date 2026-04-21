@@ -8,7 +8,22 @@ llm = HuggingFaceEndpoint(
     task="text-generation"
 )
 model = ChatHuggingFace(llm=llm)
+# State
+class State(TypedDict):
+    messages: Annotated[list[BaseMessage], add_messages]
 
+# Node
+def chat_node(state: State):
+    response = model.invoke(state["messages"])
+    return {"messages": [response]}
+
+# Graph
+graph = StateGraph(State)
+graph.add_node("chat", chat_node)
+graph.add_edge(START, "chat")
+graph.add_edge("chat", END)
+
+chatbot = graph.compile()
 st.title("🤖 Chat App")
 
 user_input = st.chat_input("Ask anything")
@@ -37,11 +52,13 @@ if user_input:
             lc_messages.append(AIMessage(content=msg["content"]))
 
     # LLM with memory
-    response = model.invoke(lc_messages).conten
+    response = chatbot.invoke({"messages": lc_messages})
+    final_response = response["messages"][-1].content
 
     st.session_state["messages"].append({
         "role": "assistant",
-        "content": response
+        "content": final_response
+        st.write(response)
     })
 
     with st.chat_message("assistant"):
